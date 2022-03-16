@@ -1,0 +1,70 @@
+  
+DROP SCHEMA IF EXISTS db_gameslist;
+
+CREATE SCHEMA db_gameslist;
+
+USE db_gameslist;
+
+-- platform table and values
+create table platform (
+	platform_id int not null auto_increment,
+    platform_name varchar(50),
+
+  CONSTRAINT PK_platform_id primary key(platform_id)
+  );
+  
+  INSERT INTO platform (platform_name) 
+  VALUES ('PC'), 
+         ( 'Browser'), 
+         ('PS3'), 
+         ( 'Xbox'), 
+         ('Playstation 2');
+
+
+-- publisher tables and values
+  create table publisher (
+	publisher_id int not null auto_increment,
+    publisher_name varchar(50),
+
+  CONSTRAINT PK_publisher_id primary key(publisher_id)
+  );
+  
+  INSERT INTO publisher (publisher_name) 
+  VALUES ('Microsoft'), 
+         ('Ninja Kiwi'), 
+         ('2K Games'), 
+         ('Nintendo'), 
+         ('Square Enix');
+  
+  
+  -- game table
+create table games (
+	games_id int not null auto_increment,
+    game_name varchar(50),
+	publisher_id int not null,
+	platform_id int not null,
+  CONSTRAINT PK_games_id primary key(games_id),
+  CONSTRAINT FK_platform_id foreign key(platform_id) references platform(platform_id),
+  CONSTRAINT FK_publisher_id foreign key(publisher_id) references publisher(publisher_id)
+);
+
+-- insert values to game table
+
+
+INSERT INTO games ( game_name, platform_id, publisher_id) 
+  VALUES ( 'Age of Empires',3 , 4), 
+         ('Bloons', 2,4), 
+         ('Civilization', 4,1), 
+         ('Halo: Combat Evolved', 3, 5), 
+         ('Kingdom Hearts 1',  2, 2);
+         
+select g.game_name, pl.platform_name,pb.publisher_name 
+from games g LEFT JOIN publisher pb
+ON g.publisher_id = pb.publisher_id
+LEFT JOIN platform pl  
+ON g.platform_id = pl.platform_id;
+
+
+-- select * from publisher;
+-- select * from platform;
+-- select * from games;
